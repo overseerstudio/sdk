@@ -1,0 +1,24 @@
+{
+  "name": "@overseer-studio/sdk",
+  "version": "0.1.0",
+  "description": "Build extensions for Overseer Studio",
+  "module": "dist/index.js",
+  "source": "src/index.ts",
+  "types": "dist/types.d.ts",
+  "homepage": "https://github.com/overseerstudio/sdk",
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Overseer Studio <hello@overseer.studio>",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@parcel/packager-ts": "^2.16.0",
+    "@parcel/transformer-typescript-types": "^2.16.0",
+    "parcel": "^2.16.0",
+    "typescript": "^5.9.3"
+  }
+}
