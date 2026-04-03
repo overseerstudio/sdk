@@ -23,25 +23,38 @@ npm install @overseer-studio/sdk
 Listen for events from Overseer Studio using the SDK:
 
 ```typescript
-import { onOverseerReady, onOverseerConfigChanged } from '@overseer-studio/sdk';
+import { onReady, onConfigChanged, sendEvent, subscribe, unsubscribe } from '@overseer-studio/sdk';
 
 // Listen for events from Overseer Studio
-const destroy = onOverseerReady(({ detail: { config, extensionId, language } }) => {
+const destroy = onReady(({ detail: { config, extensionId, language } }) => {
   // Your extension is now ready to send and receive events
-  window.Overseer.send('EVENT_NAME', { data: 'value' });
+  sendEvent('EVENT_NAME', { data: 'value' });
 
   // Subscribe to events from other extensions
   const subscriptionCallback = (payload) => {
     console.log('Received event with data', payload);
   }
-  window.Overseer.subscribe('ANOTHER_EVENT_NAME', subscriptionCallback);
+  subscribe('ANOTHER_EVENT_NAME', subscriptionCallback);
 
   // Unsubscribe from events when your extension no longer needs them
-  window.Overseer.unsubscribe('ANOTHER_EVENT_NAME', subscriptionCallback);
+  unsubscribe('ANOTHER_EVENT_NAME', subscriptionCallback);
 })
 
 // Later, if needed, destroy the Overseer event listeners
 destroy();
+```
+
+### Toast messages
+
+Trigger toast messages within Overseer:
+
+```typescript
+import { toast } from '@overseer-studio/sdk';
+toast.success('Hooray!', 'This is something to celebrate!')
+toast.error('Oops', 'Something went wrong.')
+toast.notify('Did a thing', 'Thought you should know.')
+toast.warning('Warning', 'Maybe you should check it out.')
+toast.info('Here you go', 'I am presenting you with the thing you wanted.')
 ```
 
 ### TypeScript
@@ -56,7 +69,7 @@ type MyExtensionConfig = {
   funkyTown: true;
 }
 
-const destroy = onOverseerReady<MyExtensionConfig>(({ detail: { config } }) => {
+const destroy = onReady<MyExtensionConfig>(({ detail: { config } }) => {
   console.log(
     'Extension ready with config',
     config.url, // Type supported
@@ -72,4 +85,4 @@ ISC
 
 # Copyright
 
-2025 © Overseer Studio LLC
+2025-2026 © Infinite Turtles, LLC.

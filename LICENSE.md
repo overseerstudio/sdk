@@ -1,6 +1,6 @@
 ISC License
 
-Copyright 2025 Overseer Studio LLC
+Copyright 2025-2026 Infinite Turtles, LLC.
 
 Permission to use, copy, modify, and/or distribute this software for any purpose
 with or without fee is hereby granted, provided that the above copyright notice

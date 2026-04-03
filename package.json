@@ -2,13 +2,21 @@
   "name": "@overseer-studio/sdk",
   "version": "0.1.0",
   "description": "Build extensions for Overseer Studio",
-  "module": "dist/index.js",
   "source": "src/index.ts",
-  "types": "dist/types.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "homepage": "https://github.com/overseerstudio/sdk",
   "scripts": {
-    "watch": "parcel watch",
-    "build": "parcel build",
+    "dev": "vite build --watch",
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,9 +24,8 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "@parcel/packager-ts": "^2.16.0",
-    "@parcel/transformer-typescript-types": "^2.16.0",
-    "parcel": "^2.16.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^8.0.3",
+    "vite-plugin-dts": "^1.0.5"
   }
 }
