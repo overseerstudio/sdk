@@ -50,4 +50,6 @@ export function unsubscribe<T>(module: string, callback: (state: T) => void) {
   return window.Overseer.unsubscribe(module, callback);
 }
 
+export * from './shortcuts';
+
 export type * from './types';

@@ -57,6 +57,50 @@ toast.warning('Warning', 'Maybe you should check it out.')
 toast.info('Here you go', 'I am presenting you with the thing you wanted.')
 ```
 
+### Custom shortcuts
+
+Register custom shortcuts for your extension and listen for the events.
+
+In your extension's `manifest.json` file, define the shortcuts you expose from
+your extension.
+
+```json
+{
+  // Your manifest [...]
+  "shortcuts": [
+    {
+      "id": "next-turn",
+      "label": "Next turn",
+      "description": "Advance the tracker to the next turn",
+      "defaultKey": ""
+    },
+    {
+      "id": "stop",
+      "label": "Stop",
+      "description": "Stop tracking turns",
+      "defaultKey": "x"
+    }
+  ]
+}
+```
+
+Listen to shortcuts in your extension.
+
+```typescript
+import { onShortcut } from '@overseer-studio/sdk'
+
+onShortcut("next-turn", () => {
+  console.log('advancing to next turn')
+})
+
+onShortcut("stop", () => {
+  console.log('stopping the tracker')
+})
+````
+
+Shortcuts are unique to your app. You don't need to fear overlapping with
+another extension's shortcuts.
+
 ### TypeScript
 
 This library provides full TypeScript definitions. To leverage TypeScript in
