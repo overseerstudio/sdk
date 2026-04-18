@@ -1,6 +1,6 @@
 {
   "name": "@overseer-studio/sdk",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Build extensions for Overseer Studio",
   "source": "src/index.ts",
   "main": "dist/index.js",
@@ -13,6 +13,9 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "bin": {
+    "overseer": "./dist/cli/cli.js"
+  },
   "files": [
     "dist",
     "README.md",
@@ -21,17 +24,33 @@
   "homepage": "https://github.com/overseerstudio/sdk",
   "scripts": {
     "dev": "vite build --watch",
-    "build": "vite build",
+    "build": "vite build && vite build --mode cli",
+    "build:lib": "vite build",
+    "build:cli": "vite build --mode cli && chmod +x dist/cli/cli.js",
     "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "Overseer Studio <hello@overseer.studio>",
   "license": "ISC",
   "type": "commonjs",
+  "volta": {
+    "node": "24.13.0"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "chalk": "^4.1.2",
+    "commander": "^12.1.0",
+    "ora": "^5.4.1",
+    "tar-fs": "^3.1.1",
+    "zod": "^3.24.0"
+  },
   "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/tar-fs": "^2.0.4",
     "typescript": "^5.9.3",
     "vite": "^8.0.3",
-    "vite-plugin-dts": "^1.0.5"
+    "vite-plugin-dts": "^1.0.5",
+    "vitest": "^2.1.0"
   }
 }

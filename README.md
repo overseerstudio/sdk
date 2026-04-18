@@ -1,132 +1,113 @@
 # Overseer Studio SDK
 
-Build your own extensions for Overseer Studio using your favorite web framework
-and technologies.
+Build, publish, and develop plugins for Overseer Studio.
 
-## About this SDK
+## What's in this package
 
-This SDK is a very simple wrapper for some common events that Overseer Studio
-provides to your extension. You are free to implement this SDK into any web
-framework or technology that you prefer. Use React, Vue, Angular, jQuery, or
-even just plain ol' JavaScript.
+- **CLI** (`overseer`) — scaffold, build, and publish plugins to the marketplace
+- **Library** — runtime API for extensions (events, toasts, shortcuts)
 
-## Installation
+## Prerequisites
 
-Before we get started, you'll need to install Node and Yarn or npm, and create a directory for your project. Then, install the Overseer Studio SDK using npm:
+Node.js and npm.
+
+## Setup
+
+Install the SDK as a dev dependency in your plugin project:
 
 ```shell
-npm install @overseer-studio/sdk
+npm install --save @overseer-studio/sdk
 ```
 
-## Usage
-
-Listen for events from Overseer Studio using the SDK:
-
-```typescript
-import { onReady, onConfigChanged, sendEvent, subscribe, unsubscribe } from '@overseer-studio/sdk';
-
-// Listen for events from Overseer Studio
-const destroy = onReady(({ detail: { config, extensionId, language } }) => {
-  // Your extension is now ready to send and receive events
-  sendEvent('EVENT_NAME', { data: 'value' });
-
-  // Subscribe to events from other extensions
-  const subscriptionCallback = (payload) => {
-    console.log('Received event with data', payload);
-  }
-  subscribe('ANOTHER_EVENT_NAME', subscriptionCallback);
-
-  // Unsubscribe from events when your extension no longer needs them
-  unsubscribe('ANOTHER_EVENT_NAME', subscriptionCallback);
-})
-
-// Later, if needed, destroy the Overseer event listeners
-destroy();
-```
-
-### Toast messages
-
-Trigger toast messages within Overseer:
-
-```typescript
-import { toast } from '@overseer-studio/sdk';
-toast.success('Hooray!', 'This is something to celebrate!')
-toast.error('Oops', 'Something went wrong.')
-toast.notify('Did a thing', 'Thought you should know.')
-toast.warning('Warning', 'Maybe you should check it out.')
-toast.info('Here you go', 'I am presenting you with the thing you wanted.')
-```
-
-### Custom shortcuts
-
-Register custom shortcuts for your extension and listen for the events.
-
-In your extension's `manifest.json` file, define the shortcuts you expose from
-your extension.
+Add the `overseer` CLI to your `package.json` scripts:
 
 ```json
 {
-  // Your manifest [...]
-  "shortcuts": [
-    {
-      "id": "next-turn",
-      "label": "Next turn",
-      "description": "Advance the tracker to the next turn",
-      "defaultKey": ""
-    },
-    {
-      "id": "stop",
-      "label": "Stop",
-      "description": "Stop tracking turns",
-      "defaultKey": "x"
-    }
-  ]
+  "scripts": {
+    "overseer": "overseer"
+  }
 }
 ```
 
-Listen to shortcuts in your extension.
+Run CLI commands through npm:
+
+```shell
+npm run overseer -- login
+npm run overseer -- init
+npm run overseer -- build
+npm run overseer -- publish
+```
+
+## Quick start
+
+```shell
+npm run overseer -- login
+npm run overseer -- scope claim @your-name
+npm run overseer -- init
+# ... build your extension files ...
+npm run overseer -- publish
+```
+
+See the [full developer documentation](https://overseer.studio/docs/developers/) for a step-by-step tutorial and command reference.
+
+## Library
+
+If you're building a bundled extension with a JavaScript build step, import the SDK directly:
 
 ```typescript
-import { onShortcut } from '@overseer-studio/sdk'
+import { onReady, sendEvent, subscribe, unsubscribe } from '@overseer-studio/sdk';
 
-onShortcut("next-turn", () => {
-  console.log('advancing to next turn')
-})
+const destroy = onReady(({ detail: { config, extensionId, language } }) => {
+  sendEvent('my-event', { data: 'value' });
 
-onShortcut("stop", () => {
-  console.log('stopping the tracker')
-})
-````
+  subscribe('another-event', (payload) => {
+    console.log(payload);
+  });
+});
 
-Shortcuts are unique to your app. You don't need to fear overlapping with
-another extension's shortcuts.
+// Call when your extension is torn down
+destroy();
+```
+
+### Toasts
+
+```typescript
+import { toast } from '@overseer-studio/sdk';
+
+toast.success('Done!', 'Your action was successful.');
+toast.error('Oops', 'Something went wrong.');
+toast.warning('Heads up', 'Check this out.');
+toast.info('FYI', 'Here is some information.');
+```
+
+### Shortcuts
+
+Define shortcuts in your extension manifest, then listen for them:
+
+```typescript
+import { onShortcut } from '@overseer-studio/sdk';
+
+onShortcut('next-turn', () => {
+  // advance to the next turn
+});
+```
 
 ### TypeScript
 
-This library provides full TypeScript definitions. To leverage TypeScript in
-your extension, import necessary types from the SDK and use them in your code:
+Full TypeScript definitions are included:
 
 ```typescript
-type MyExtensionConfig = {
+type MyConfig = {
   url: string;
-  roomId: string;
-  funkyTown: true;
-}
+  label: string;
+};
 
-const destroy = onReady<MyExtensionConfig>(({ detail: { config } }) => {
-  console.log(
-    'Extension ready with config',
-    config.url, // Type supported
-    config.roomId, // Type supported
-    config.funkyTown, // Type supported
-  )
-})
+const destroy = onReady<MyConfig>(({ detail: { config } }) => {
+  console.log(config.url);   // typed
+  console.log(config.label); // typed
+});
 ```
 
-# License
+## License
 
-ISC
-
-# Copyright
-
-2025-2026 © Infinite Turtles, LLC.
+ISC — 2025–2026 © Infinite Turtles, LLC.
