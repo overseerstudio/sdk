@@ -8,6 +8,7 @@ type ManifestLike = {
   presets?: Array<{ $ref: string }>;
   themes?: Array<{ src?: { $ref: string } }>;
   locales?: Array<{ src?: { $ref: string } }>;
+  datasets?: Array<{ $ref: string }>;
 };
 
 export async function collectAssets(pluginDir: string, manifest: ManifestLike): Promise<string[]> {
@@ -106,6 +107,23 @@ export async function collectAssets(pluginDir: string, manifest: ManifestLike): 
   for (const entry of [...(manifest.themes ?? []), ...(manifest.locales ?? [])]) {
     if (entry?.src?.$ref) {
       add(resolveRef(pluginManifestPath, entry.src.$ref));
+    }
+  }
+
+  for (const dataset of manifest.datasets ?? []) {
+    const datasetManifestRel = resolveRef(pluginManifestPath, dataset.$ref);
+    add(datasetManifestRel);
+
+    const datasetManifestPath = path.join(pluginDir, datasetManifestRel);
+    const datasetJson = JSON.parse(fs.readFileSync(datasetManifestPath, 'utf-8')) as Record<
+      string,
+      unknown
+    >;
+
+    // Static datasets reference a local records file; dynamic datasets have no extra files
+    const source = datasetJson.source as { local?: { $ref?: string } } | undefined;
+    if (source?.local?.$ref) {
+      add(resolveRef(datasetManifestPath, source.local.$ref));
     }
   }
 

@@ -10,13 +10,13 @@ import { readManifest, validateManifest } from './manifest';
 
 describe('validateManifest', () => {
   const valid = {
-    id: '@overseer-community/welcome',
+    id: '@overseer/welcome',
     name: 'Welcome',
     version: '1.0.0',
   };
 
   it('accepts a valid manifest with @ scope', () => {
-    expect(validateManifest(valid).id).toBe('@overseer-community/welcome');
+    expect(validateManifest(valid).id).toBe('@overseer/welcome');
   });
 
   it('rejects a manifest id without @ scope', () => {

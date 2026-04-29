@@ -21,7 +21,7 @@ const mockedAxios = vi.mocked(axios);
 
 describe('validatePluginId', () => {
   it('accepts @scope/name', () => {
-    expect(() => validatePluginId('@overseer-community/welcome')).not.toThrow();
+    expect(() => validatePluginId('@overseer/welcome')).not.toThrow();
   });
 
   it('rejects scope/name without @', () => {
@@ -47,7 +47,7 @@ describe('validatePluginId', () => {
 
 describe('validateScope', () => {
   it('accepts @scope', () => {
-    expect(() => validateScope('@overseer-community')).not.toThrow();
+    expect(() => validateScope('@overseer')).not.toThrow();
   });
 
   it('rejects scope without @', () => {
