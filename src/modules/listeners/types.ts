@@ -16,6 +16,7 @@ export type OverseerEventDetail<T extends object = object> = {
   config: T;
   extensionId: string;
   language: string;
+  state: Record<string, unknown> | null;
 };
 
 export type OverseerShortcutEventDetail = {

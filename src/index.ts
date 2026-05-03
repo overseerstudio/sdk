@@ -36,17 +36,24 @@ export type OverseerDataAPI = {
   ): () => void;
 };
 
+export type OverseerStateAPI = {
+  get<T>(key: string): Promise<T | null>;
+  set<T>(key: string, value: T): void;
+};
+
 export type OverseerSDK = {
   send<T>(module: string, event?: T): void;
   subscribe<T>(module: string, callback: (state: T) => void): void;
   unsubscribe<T>(module: string, callback: (state: T) => void): void;
   data: OverseerDataAPI;
+  state: OverseerStateAPI;
 };
 
 export * from './modules/events';
 export * from './modules/listeners';
 export * from './modules/toasts';
 export * from './modules/data';
+export * from './modules/state';
 
 export type * from './modules/listeners';
 export type * from './modules/data/types';

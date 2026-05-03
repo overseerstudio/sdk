@@ -92,6 +92,29 @@ onShortcut('next-turn', () => {
 });
 ```
 
+### State
+
+Persist runtime state across sessions — for example, which monster is currently selected. Each tile gets its own keyed store; `setState` saves a value, `getState` reads it back, and `null` clears a key.
+
+```typescript
+import { onReady, getState, setState } from '@overseer-studio/sdk';
+
+type SelectedMonster = { id: string; name: string };
+
+onReady<{}>(async ({ detail: { state } }) => {
+  const initial = state?.selected as SelectedMonster | null;
+  render(initial);
+});
+
+function select(monster: SelectedMonster) {
+  setState<SelectedMonster>('selected', monster);
+}
+
+async function loadLater() {
+  const current = await getState<SelectedMonster>('selected');
+}
+```
+
 ### TypeScript
 
 Full TypeScript definitions are included:
