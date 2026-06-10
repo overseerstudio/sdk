@@ -7,6 +7,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 
 import { collectAssets } from '../lib/assets';
+import { validateIcons } from '../lib/icons';
 import { readManifest } from '../lib/manifest';
 import { packPlugin } from '../lib/pack';
 import { isStale } from '../lib/stale';
@@ -31,6 +32,10 @@ export async function buildCommand(opts: Options = {}): Promise<void> {
     spinner.start('Collecting assets');
     const assets = await collectAssets(pluginDir, manifest);
     spinner.succeed(`Collected ${assets.length} asset(s)`);
+
+    spinner.start('Validating icons');
+    validateIcons(pluginDir, manifest);
+    spinner.succeed('Icons valid');
 
     const sourcePaths = assets.map(a => path.join(pluginDir, a));
     if (!opts.force && !isStale(tarPath, sourcePaths) && fs.existsSync(distPath)) {

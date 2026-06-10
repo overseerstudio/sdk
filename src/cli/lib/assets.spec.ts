@@ -133,6 +133,42 @@ describe('collectAssets', () => {
     await expect(collect()).rejects.toThrow('extensions/broken/icon.png');
   });
 
+  it('packages a $ref description file but not an inline description', async () => {
+    writeJson('manifest.json', {
+      id: 'test/plugin',
+      name: 'Test',
+      version: '1.0.0',
+      description: { $ref: './README.md' },
+    });
+    write('README.md', '# Readme');
+    const assets = await collect();
+    expect(assets).toContain('README.md');
+  });
+
+  it('packages the plugin-level icon', async () => {
+    writeJson('manifest.json', {
+      id: 'test/plugin',
+      name: 'Test',
+      version: '1.0.0',
+      icon: { $ref: './assets/icon.png' },
+    });
+    write('assets/icon.png');
+    const assets = await collect();
+    expect(assets).toContain('assets/icon.png');
+  });
+
+  it('does not package a changelog $ref (sent as a separate API field)', async () => {
+    writeJson('manifest.json', {
+      id: 'test/plugin',
+      name: 'Test',
+      version: '1.0.0',
+      changelog: { $ref: './changelogs/1.0.0.md' },
+    });
+    write('changelogs/1.0.0.md', '- release');
+    const assets = await collect();
+    expect(assets).toEqual(['manifest.json']);
+  });
+
   it('handles a manifest with no optional sections', async () => {
     writeJson('manifest.json', {
       id: 'test/plugin',

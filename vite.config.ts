@@ -22,6 +22,9 @@ export default defineConfig(({ mode }) => {
         minify: false,
         emptyOutDir: true,
         cssCodeSplit: false,
+        // Inline the bundled default scaffold icon (≤2 MB) as a base64 data URL
+        // so the CJS CLI never has to resolve an asset path at runtime.
+        assetsInlineLimit: 4_194_304,
         rollupOptions: {
           input: resolve(__dirname, 'src/cli/index.ts'),
           external: nodeBuiltins,

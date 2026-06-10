@@ -9,7 +9,7 @@ import ora from 'ora';
 
 import { createApiClient, handleApiError } from '../lib/api';
 import { resolveToken } from '../lib/auth';
-import { readManifest } from '../lib/manifest';
+import { readManifest, resolveManifestRefs } from '../lib/manifest';
 
 import { buildCommand } from './build';
 
@@ -33,6 +33,7 @@ export async function publishCommand(opts: Options = {}): Promise<void> {
     }
 
     const manifest = readManifest(manifestPath);
+    const { description, changelog } = resolveManifestRefs(manifest, pluginDir);
 
     if (!fs.existsSync(tarPath) || !fs.existsSync(distPath)) {
       throw new Error('plugin.tar.gz or plugin.json missing — run `overseer build` first.');
@@ -56,7 +57,7 @@ export async function publishCommand(opts: Options = {}): Promise<void> {
       await client.registerPlugin({
         id: manifest.id,
         name: manifest.name,
-        description: manifest.description,
+        description,
         category_id: category.id,
         homepage: (manifest as unknown as { homepage?: string }).homepage,
       });
@@ -83,6 +84,7 @@ export async function publishCommand(opts: Options = {}): Promise<void> {
         tarballPath: tarPath,
         hash: distribution.hash,
         assets: distribution.assets,
+        changelog,
       },
       percent => {
         uploadSpinner.text = `Publishing package (${percent}%)`;

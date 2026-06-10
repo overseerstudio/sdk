@@ -9,12 +9,15 @@ export type PluginManifest = {
   name: string;
   version: string;
   author?: string;
-  description?: string;
+  description?: string | { $ref: string };
+  changelog?: { $ref: string };
   category?: string;
   homepage?: string;
   compatibleVersion?: string | { min?: string; max?: string };
+  icon?: { $ref: string };
   extensions?: Array<{ $ref: string }>;
   presets?: Array<{ $ref: string }>;
+  datasets?: Array<{ $ref: string }>;
   themes?: Array<{ id: string; label: string; src: { $ref: string } | string }>;
   locales?: Array<{ id: string; label: string; src: { $ref: string } | string }>;
 };

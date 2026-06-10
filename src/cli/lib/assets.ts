@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 type ManifestLike = {
+  description?: string | { $ref: string };
+  icon?: { $ref: string };
   extensions?: Array<{ $ref: string }>;
   presets?: Array<{ $ref: string }>;
   themes?: Array<{ src?: { $ref: string } }>;
@@ -35,6 +37,17 @@ export async function collectAssets(pluginDir: string, manifest: ManifestLike): 
 
   const pluginManifestPath = path.join(pluginDir, 'manifest.json');
   add('manifest.json');
+
+  // A markdown description referenced via $ref must travel in the tarball so the
+  // backend extractor can resolve it during finalize. (changelog is sent as a
+  // separate API field and does not need to be packaged.)
+  if (typeof manifest.description === 'object' && manifest.description?.$ref) {
+    add(resolveRef(pluginManifestPath, manifest.description.$ref));
+  }
+
+  if (manifest.icon?.$ref) {
+    add(resolveRef(pluginManifestPath, manifest.icon.$ref));
+  }
 
   for (const ext of manifest.extensions ?? []) {
     const extManifestRel = resolveRef(pluginManifestPath, ext.$ref);
