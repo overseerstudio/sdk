@@ -59,6 +59,7 @@ describe('scaffoldExtension', () => {
 
   it('writes a valid extension manifest with $ref icon and source', () => {
     const manifest = parse(find(result.files, 'manifest.json'));
+    expect(manifest.$schema).toBe('https://overseer.studio/schemas/extension/manifest.json');
     expect(manifest.id).toBe('@acme/tools-timer');
     expect(manifest.category).toBe('Organization');
     expect(manifest.author).toBe('Ada');
@@ -103,6 +104,7 @@ describe('scaffoldPreset', () => {
 
   it('builds one blank canvas screen and zero tiles', () => {
     const manifest = parse(find(result.files, 'manifest.json'));
+    expect(manifest.$schema).toBe('https://overseer.studio/schemas/preset/manifest.json');
     expect(manifest.id).toBe('@acme/tools-starter');
     expect(manifest.icon).toEqual({ $ref: 'assets/icon.png' });
     const state = manifest.state as { currentScreen: string; screens: unknown[]; tiles: unknown[] };
@@ -170,6 +172,7 @@ describe('scaffoldDataset', () => {
       type: 'static',
     });
     const manifest = parse(find(result.files, 'monsters.json'));
+    expect(manifest.$schema).toBe('https://overseer.studio/schemas/dataset/manifest.json');
     expect(manifest.id).toBe('monsters');
     expect(manifest.source).toEqual({ local: { $ref: './monsters/records.json' } });
     expect(result.files.some(f => f.path === 'datasets/monsters/records.json')).toBe(true);

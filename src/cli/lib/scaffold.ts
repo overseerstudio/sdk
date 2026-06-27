@@ -6,6 +6,7 @@ import path from 'node:path';
 import type { PluginManifest } from '../types';
 
 const DOCS = 'https://overseer.studio/docs/developers';
+export const SCHEMAS = 'https://overseer.studio/schemas';
 
 export type FileEntry = { path: string; content: string | Buffer };
 export type ManifestPatch = Partial<PluginManifest>;
@@ -59,6 +60,7 @@ export function scaffoldExtension(
   const id = `${pluginId}-${ext.slug}`;
 
   const manifest = compact({
+    $schema: `${SCHEMAS}/extension/manifest.json`,
     id,
     label: ext.label,
     description: ext.description,
@@ -223,6 +225,7 @@ export function scaffoldPreset(
   };
 
   const manifest = compact({
+    $schema: `${SCHEMAS}/preset/manifest.json`,
     id,
     label: preset.label,
     description: preset.description,
@@ -385,6 +388,7 @@ export function scaffoldDataset(dataset: DatasetConfig): ScaffoldResult {
   const files: FileEntry[] = [];
 
   const base = {
+    $schema: `${SCHEMAS}/dataset/manifest.json`,
     id: dataset.slug,
     label: dataset.label,
     ...(dataset.description ? { description: dataset.description } : {}),

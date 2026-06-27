@@ -11,6 +11,7 @@ import { createApiClient, createPublicClient } from '../lib/api';
 import { resolveToken } from '../lib/auth';
 import { loadDefaultIcon } from '../lib/defaultIcon';
 import {
+  SCHEMAS,
   mergeManifest,
   scaffoldDataset,
   scaffoldExtension,
@@ -248,6 +249,7 @@ export async function initCommand(): Promise<void> {
 
   // --- Build and write the manifest + content files ---
   const baseManifest: PluginManifest = {
+    $schema: `${SCHEMAS}/plugin/manifest.json`,
     id,
     name,
     version: '0.1.0',

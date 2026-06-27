@@ -5,6 +5,7 @@ export type Config = {
 };
 
 export type PluginManifest = {
+  $schema?: string;
   id: string;
   name: string;
   version: string;
