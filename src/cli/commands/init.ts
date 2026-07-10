@@ -72,7 +72,11 @@ export async function initCommand(): Promise<void> {
     const token = await resolveToken({ allowPrompt: false });
     scopes = await createApiClient(token).listScopes();
   } catch {
-    // Not logged in — fall back to manual ID entry below.
+    console.log(
+      chalk.dim(
+        'Not logged in — run `npx @overseer-studio/sdk login` to pick from your claimed scopes.',
+      ),
+    );
   }
 
   let id: string;
@@ -294,8 +298,8 @@ function printNextSteps(extensionSlug: string | undefined, empty: boolean): void
   }
 
   lines.push(
-    chalk.cyan('  overseer build') + chalk.dim('     package the plugin'),
-    chalk.cyan('  overseer publish') + chalk.dim('   publish to the marketplace'),
+    chalk.cyan('  npx @overseer-studio/sdk build') + chalk.dim('     package the plugin'),
+    chalk.cyan('  npx @overseer-studio/sdk publish') + chalk.dim('   publish to the marketplace'),
   );
 
   if (empty) {

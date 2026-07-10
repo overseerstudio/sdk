@@ -17,7 +17,7 @@ export async function scopeListCommand(opts: Options): Promise<void> {
 
     if (scopes.length === 0) {
       console.log(chalk.dim('You have not claimed any scopes yet.'));
-      console.log(chalk.dim('Claim one with `overseer scope claim @yourscope`.'));
+      console.log(chalk.dim('Claim one with `npx @overseer-studio/sdk scope claim @yourscope`.'));
       return;
     }
 

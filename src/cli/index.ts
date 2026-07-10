@@ -11,7 +11,10 @@ import { whoamiCommand } from './commands/whoami';
 
 const program = new Command();
 
-program.name('overseer').description('Overseer plugin developer CLI').version('0.3.0');
+program
+  .name('npx @overseer-studio/sdk')
+  .description('Overseer plugin developer CLI')
+  .version('0.7.1');
 
 program
   .command('login')

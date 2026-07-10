@@ -20,8 +20,9 @@ export async function resolveToken(opts: ResolveOptions = {}): Promise<string> {
   if (config?.token) return config.token;
 
   if (opts.allowPrompt === false) {
-    console.error(chalk.red('No API token found. Run `overseer login` or set OVERSEER_TOKEN.'));
-    process.exit(1);
+    throw new Error(
+      'No API token found. Run `npx @overseer-studio/sdk login` or set OVERSEER_TOKEN.',
+    );
   }
 
   console.log(

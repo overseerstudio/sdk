@@ -36,7 +36,9 @@ export async function publishCommand(opts: Options = {}): Promise<void> {
     const { description, changelog } = resolveManifestRefs(manifest, pluginDir);
 
     if (!fs.existsSync(tarPath) || !fs.existsSync(distPath)) {
-      throw new Error('plugin.tar.gz or plugin.json missing — run `overseer build` first.');
+      throw new Error(
+        'plugin.tar.gz or plugin.json missing — run `npx @overseer-studio/sdk build` first.',
+      );
     }
 
     const distribution = JSON.parse(fs.readFileSync(distPath, 'utf-8')) as PluginDistribution;
@@ -68,7 +70,7 @@ export async function publishCommand(opts: Options = {}): Promise<void> {
         const scope = manifest.id.split('/')[0];
         console.error(
           chalk.red(
-            `\nScope '${scope}' is not yours. Run \`overseer scope claim ${scope}\` or choose a scope you own.`,
+            `\nScope '${scope}' is not yours. Run \`npx @overseer-studio/sdk scope claim ${scope}\` or choose a scope you own.`,
           ),
         );
         process.exit(1);
